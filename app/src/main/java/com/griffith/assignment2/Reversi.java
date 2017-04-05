@@ -17,7 +17,6 @@ public class Reversi extends View {
     private int square_size;
     private Coordinate touchUpCoordinate;
     private ReversiGameLogic rgc;
-    private boolean size_calculated = false;
 
     private ShapeDrawable[][] graphic_board = new ShapeDrawable[SIZE_BOARD][SIZE_BOARD];
 
@@ -66,7 +65,6 @@ public class Reversi extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
                 graphic_board[i][j] = new ShapeDrawable(new OvalShape());
@@ -90,7 +88,8 @@ public class Reversi extends View {
     }
 
     public void updateBoard(ReversiGameLogic.Pawn[][] board){
-        square_size  = height / SIZE_BOARD;
+        if (square_size > 5000 || square_size == 0)
+            square_size  = height / SIZE_BOARD;
         Log.d("REVERSI", "square_size = " + square_size);
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
