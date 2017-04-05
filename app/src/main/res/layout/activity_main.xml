@@ -5,25 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.griffith.assignment2.MainActivity">
+    tools:context="com.griffith.assignment2.MainActivity"
+    android:background="@android:color/darker_gray">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Player 1"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Player 2"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Points1"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Points2"/>
+
+        <TextView
+            android:id="@+id/points_black"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Points1"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/current_player"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Player"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+
+        <TextView
+            android:id="@+id/points_white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Points2"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
 
     <com.griffith.assignment2.Reversi
         android:id="@+id/reversi_board"
@@ -35,6 +61,10 @@
         android:id="@+id/reset_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/reset_button" />
+        android:layout_gravity="end"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:text="@string/reset_button"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

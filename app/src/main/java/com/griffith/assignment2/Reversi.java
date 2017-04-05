@@ -61,7 +61,7 @@ public class Reversi extends View {
         height = h;
         width = w;
         super.onMeasure(w, h);
-        Log.d("REVERSI", "onMeasure");
+        //Log.d("REVERSI", "onMeasure");
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -84,25 +84,26 @@ public class Reversi extends View {
             }
         }
 
-        Log.d("REVERSI", "onDraw");
+        //Log.d("REVERSI", "onDraw");
     }
 
     public void updateBoard(ReversiGameLogic.Pawn[][] board){
+        int margin = 2;
         if (square_size > 5000 || square_size == 0)
             square_size  = height / SIZE_BOARD;
-        Log.d("REVERSI", "square_size = " + square_size);
+        //Log.d("REVERSI", "square_size = " + square_size);
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
-                graphic_board[i][j].setBounds(square_size * i, square_size * j, square_size * i + square_size, square_size * j + square_size);
+                graphic_board[i][j].setBounds(square_size * i + margin, square_size * j + margin, square_size * i + square_size - margin, square_size * j + square_size - margin);
                 if (board[i][j] == ReversiGameLogic.Pawn.WHITE)
                     graphic_board[i][j].getPaint().setColor(Color.WHITE);
                 else if (board[i][j] == ReversiGameLogic.Pawn.BLACK)
                     graphic_board[i][j].getPaint().setColor(Color.BLACK);
                 else
-                    graphic_board[i][j].getPaint().setColor(Color.GREEN);
+                    graphic_board[i][j].getPaint().setColor(Color.GRAY);
             }
         }
-        Log.d("REVERSI", "board updated");
+        //Log.d("REVERSI", "board updated");
         invalidate();
     }
 

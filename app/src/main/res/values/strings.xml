@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Assignment2</string>
     <string name="reset_button">Reset Game</string>
+    <string name="white">White</string>
+    <string name="black">Black</string>
 </resources>

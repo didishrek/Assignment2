@@ -2,6 +2,7 @@ package com.griffith.assignment2;
 
 
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,19 +19,27 @@ public class ReversiGameLogic {
         WHITE,
         BLACK
     }
+
+    private TextView tw_current_player;
+    private TextView tw_points_black;
+    private TextView tw_points_white;
+
     private Pawn current_player = Pawn.BLACK;
     private Reversi graphic_board;
     private Pawn[][] board = new Pawn[SIZE_BOARD][SIZE_BOARD];
     private ArrayList<Coordinate> limitChangeColor = new ArrayList<>();;
 
-    public ReversiGameLogic(Reversi graphic_board) {
+    public ReversiGameLogic(Reversi graphic_board, TextView current_player, TextView points_black, TextView points_white) {
+        this.tw_current_player = current_player;
+        this.tw_points_black = points_black;
+        this.tw_points_white = points_white;
         this.graphic_board = graphic_board;
         resetGame();
     }
 
     public void resetGame(){
         current_player = Pawn.BLACK;
-
+        this.tw_current_player.setText(R.string.black);
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
                 board[i][j] = Pawn.EMPTY;
@@ -42,6 +51,23 @@ public class ReversiGameLogic {
         board[4][4] = Pawn.WHITE;
 
         this.graphic_board.updateBoard(this.board);
+        updateCountPoints();
+    }
+
+    private void updateCountPoints(){
+        int black = 0;
+        int white = 0;
+        for (int i = 0 ; i < SIZE_BOARD; ++i) {
+            for (int j = 0; j < SIZE_BOARD; ++j) {
+                if (board[i][j] == Pawn.BLACK){
+                    black++;
+                } else if (board[i][j] == Pawn.WHITE){
+                    white++;
+                }
+            }
+        }
+        this.tw_points_black.setText(String.valueOf(black));
+        this.tw_points_white.setText(String.valueOf(white));
     }
 
     public void updateTouchEvent(Coordinate coordinate){
@@ -54,8 +80,29 @@ public class ReversiGameLogic {
 
             board[coordinate.getX()][coordinate.getY()] = current_player;
             nextPlayer();
+            updateCountPoints();
+            if (!canPlay()){
+                nextPlayer();
+                if (!canPlay()){
+                    Log.d("REVERSI", "Fini la game !");
+
+                }
+            }
         }
         this.graphic_board.updateBoard(this.board);
+    }
+
+    private boolean canPlay(){
+        for (int i = 0 ; i < SIZE_BOARD; ++i) {
+            for (int j = 0; j < SIZE_BOARD; ++j) {
+                if (board[i][j] == Pawn.EMPTY){
+                    if (!playOn(new Coordinate(i, j)))
+                        return true;
+                }
+            }
+        }
+        Log.d("FINI", "ya un false dans lair");
+        return false;
     }
 
     private boolean checkOutOfBound(int x, int y){
@@ -168,7 +215,7 @@ public class ReversiGameLogic {
                 }
             }
         }
-        Log.d("LIMIT", limitChangeColor.toString());
+        //Log.d("LIMIT", limitChangeColor.toString());
         return limitChangeColor.isEmpty();
     }
 
@@ -223,6 +270,7 @@ public class ReversiGameLogic {
             current_player = Pawn.BLACK;
         else
             current_player = Pawn.WHITE;
+        this.tw_current_player.setText(current_player == Pawn.WHITE ? R.string.white : R.string.black);
     }
 
     @Override
