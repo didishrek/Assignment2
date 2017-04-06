@@ -23,21 +23,27 @@ public class ReversiGameLogic {
     private TextView tw_current_player;
     private TextView tw_points_black;
     private TextView tw_points_white;
+    private TextView msg_win;
+
+    private int black;
+    private int white;
 
     private Pawn current_player = Pawn.BLACK;
     private Reversi graphic_board;
     private Pawn[][] board = new Pawn[SIZE_BOARD][SIZE_BOARD];
     private ArrayList<Coordinate> limitChangeColor = new ArrayList<>();;
 
-    public ReversiGameLogic(Reversi graphic_board, TextView current_player, TextView points_black, TextView points_white) {
+    public ReversiGameLogic(Reversi graphic_board, TextView current_player, TextView points_black, TextView points_white, TextView msg_win) {
         this.tw_current_player = current_player;
         this.tw_points_black = points_black;
         this.tw_points_white = points_white;
         this.graphic_board = graphic_board;
+        this.msg_win = msg_win;
         resetGame();
     }
 
     public void resetGame(){
+        msg_win.setText("");
         current_player = Pawn.BLACK;
         this.tw_current_player.setText(R.string.black);
         for (int i = 0 ; i < SIZE_BOARD; ++i){
@@ -55,8 +61,8 @@ public class ReversiGameLogic {
     }
 
     private void updateCountPoints(){
-        int black = 0;
-        int white = 0;
+        black = 0;
+        white = 0;
         for (int i = 0 ; i < SIZE_BOARD; ++i) {
             for (int j = 0; j < SIZE_BOARD; ++j) {
                 if (board[i][j] == Pawn.BLACK){
@@ -71,6 +77,7 @@ public class ReversiGameLogic {
     }
 
     public void updateTouchEvent(Coordinate coordinate){
+        Boolean finished = false;
         if (board[coordinate.getX()][coordinate.getY()] == Pawn.EMPTY) {
             if (playOn(coordinate))
                 return;
@@ -84,12 +91,32 @@ public class ReversiGameLogic {
             if (!canPlay()){
                 nextPlayer();
                 if (!canPlay()){
-                    Log.d("REVERSI", "Fini la game !");
-
+                    gameFinished();
                 }
             }
         }
         this.graphic_board.updateBoard(this.board);
+    }
+
+    private void gameFinished(){
+        if( black > white){
+            for (int i = 0 ; i < SIZE_BOARD; ++i){
+                for (int j = 0 ; j < SIZE_BOARD; ++j){
+                    board[i][j] = Pawn.BLACK;
+                }
+                msg_win.setText(R.string.black_win);
+            }
+        } else if (white > black){
+            for (int i = 0 ; i < SIZE_BOARD; ++i){
+                for (int j = 0 ; j < SIZE_BOARD; ++j){
+                    board[i][j] = Pawn.WHITE;
+                }
+            }
+            msg_win.setText(R.string.white_win);
+
+        } else {
+            msg_win.setText(R.string.loose);
+        }
     }
 
     private boolean canPlay(){
@@ -101,7 +128,6 @@ public class ReversiGameLogic {
                 }
             }
         }
-        Log.d("FINI", "ya un false dans lair");
         return false;
     }
 

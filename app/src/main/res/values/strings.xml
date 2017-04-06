@@ -3,4 +3,7 @@
     <string name="reset_button">Reset Game</string>
     <string name="white">White</string>
     <string name="black">Black</string>
+    <string name="black_win">Black wins !</string>
+    <string name="white_win">White wins !</string>
+    <string name="loose">Equality !</string>
 </resources>

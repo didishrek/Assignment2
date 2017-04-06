@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView current_player;
     private TextView points_black;
     private TextView points_white;
+    private TextView msg_win;
     private Button reset_button;
 
     @Override
@@ -25,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
         current_player = (TextView)findViewById(R.id.current_player);
         points_black = (TextView)findViewById(R.id.points_black);
         points_white = (TextView)findViewById(R.id.points_white);
+        msg_win = (TextView)findViewById(R.id.msg_win);
+        msg_win.setText("");
 
         graphic_board.post(new Runnable() {
             @Override
             public void run() {
-                reversiGameLogic = new ReversiGameLogic(graphic_board, current_player, points_black, points_white);
+                reversiGameLogic = new ReversiGameLogic(graphic_board, current_player, points_black, points_white, msg_win);
                 graphic_board.addGameLogic(reversiGameLogic);
             }
         });

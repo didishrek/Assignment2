@@ -91,7 +91,6 @@ public class Reversi extends View {
         int margin = 2;
         if (square_size > 5000 || square_size == 0)
             square_size  = height / SIZE_BOARD;
-        //Log.d("REVERSI", "square_size = " + square_size);
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
                 graphic_board[i][j].setBounds(square_size * i + margin, square_size * j + margin, square_size * i + square_size - margin, square_size * j + square_size - margin);
@@ -103,7 +102,6 @@ public class Reversi extends View {
                     graphic_board[i][j].getPaint().setColor(Color.GRAY);
             }
         }
-        //Log.d("REVERSI", "board updated");
         invalidate();
     }
 
