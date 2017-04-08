@@ -14,7 +14,7 @@ import static com.griffith.assignment2.ReversiGameLogic.SIZE_BOARD;
 public class Reversi extends View {
 
     private int square_size;
-    private Coordinate touchUpCoordinate;
+    private Location touchUpLocation;
     private ReversiGameLogic rgc;
 
     private ShapeDrawable[][] graphic_board = new ShapeDrawable[SIZE_BOARD][SIZE_BOARD];
@@ -67,7 +67,7 @@ public class Reversi extends View {
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
                 graphic_board[i][j] = new ShapeDrawable(new OvalShape());
-                graphic_board[i][j].getPaint().setColor(Color.GREEN);
+                graphic_board[i][j].getPaint().setColor(Color.GRAY);
 
             }
         }
@@ -104,11 +104,11 @@ public class Reversi extends View {
         invalidate();
     }
 
-    private Coordinate getCoordinateFromClick(float x, float y){
+    private Location getLocationFromClick(float x, float y){
         for (int i = 0 ; i < SIZE_BOARD; ++i) {
             for (int j = 0; j < SIZE_BOARD; ++j) {
                 if ((x >= square_size * i && x <= square_size * i + square_size) && (y >= square_size * j && y <= square_size * j + square_size))
-                    return new Coordinate(i, j);
+                    return new Location(i, j);
             }
         }
         return null;
@@ -117,13 +117,11 @@ public class Reversi extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-            touchUpCoordinate = getCoordinateFromClick(event.getX(), event.getY());
+            touchUpLocation = getLocationFromClick(event.getX(), event.getY());
             return true;
         } else if(event.getActionMasked() == MotionEvent.ACTION_UP) {
-            if (touchUpCoordinate.equals(getCoordinateFromClick(event.getX(), event.getY()))){
-                invalidate();
-                rgc.updateTouchEvent(touchUpCoordinate);
-                touchUpCoordinate = null;
+            if (touchUpLocation.equals(getLocationFromClick(event.getX(), event.getY()))){
+                rgc.updateTouchEvent(touchUpLocation);
             }
             return true;
         }

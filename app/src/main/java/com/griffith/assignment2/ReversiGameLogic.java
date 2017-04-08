@@ -23,11 +23,13 @@ public class ReversiGameLogic {
 
     private int black;
     private int white;
+    private int count_black;
+    private int count_white;
 
     private Pawn current_player = Pawn.BLACK;
     private Reversi graphic_board;
     private Pawn[][] board = new Pawn[SIZE_BOARD][SIZE_BOARD];
-    private ArrayList<Coordinate> limitChangeColor = new ArrayList<>();;
+    private ArrayList<Location> limitChangeColor = new ArrayList<>();;
 
     public ReversiGameLogic(Reversi graphic_board, TextView current_player, TextView points_black, TextView points_white, TextView msg_win) {
         this.tw_current_player = current_player;
@@ -41,6 +43,8 @@ public class ReversiGameLogic {
     public void resetGame(){
         msg_win.setText("");
         current_player = Pawn.BLACK;
+        count_white = 32;
+        count_black = 32;
         this.tw_current_player.setText(R.string.black);
         for (int i = 0 ; i < SIZE_BOARD; ++i){
             for (int j = 0 ; j < SIZE_BOARD; ++j){
@@ -72,16 +76,22 @@ public class ReversiGameLogic {
         this.tw_points_white.setText(String.valueOf(white));
     }
 
-    public void updateTouchEvent(Coordinate coordinate){
+    public void updateTouchEvent(Location location){
         Boolean finished = false;
-        if (board[coordinate.getX()][coordinate.getY()] == Pawn.EMPTY) {
-            if (playOn(coordinate))
+        if (board[location.getX()][location.getY()] == Pawn.EMPTY) {
+            if (playOn(location))
                 return;
-            for (Coordinate c : limitChangeColor){
-                changeColorOnLine(coordinate, c);
+            for (Location c : limitChangeColor){
+                changeColorOnLine(location, c);
             }
 
-            board[coordinate.getX()][coordinate.getY()] = current_player;
+            board[location.getX()][location.getY()] = current_player;
+            if (current_player == Pawn.BLACK)
+                count_black--;
+            else if (current_player == Pawn.WHITE)
+                count_white--;
+            if (count_black <= 0 || count_white <= 0)
+                gameFinished();
             nextPlayer();
             updateCountPoints();
             if (!canPlay()){
@@ -119,7 +129,7 @@ public class ReversiGameLogic {
         for (int i = 0 ; i < SIZE_BOARD; ++i) {
             for (int j = 0; j < SIZE_BOARD; ++j) {
                 if (board[i][j] == Pawn.EMPTY){
-                    if (!playOn(new Coordinate(i, j)))
+                    if (!playOn(new Location(i, j)))
                         return true;
                 }
             }
@@ -135,16 +145,16 @@ public class ReversiGameLogic {
         return (p != Pawn.EMPTY && p != current_player);
     }
 
-    private boolean checkLine(Coordinate origin, Coordinate target){
+    private boolean checkLine(Location origin, Location target){
         int count = 0;
-        Coordinate stop = null;
+        Location stop = null;
         if (origin.getX() == target.getX()){ //vertical
             for (int i = origin.getY() + 1 ; i <= target.getY(); i++){
                 if (!checkOutOfBound(origin.getX(), i)) break;
                 if(isNotEmptyAndNotSameColor(board[origin.getX()][i]))
                     count++;
                 else if (board[origin.getX()][i] != Pawn.EMPTY){
-                    stop = new Coordinate(origin.getX(), i);
+                    stop = new Location(origin.getX(), i);
                     break;
                 }
             }
@@ -153,7 +163,7 @@ public class ReversiGameLogic {
                 if(isNotEmptyAndNotSameColor(board[origin.getX()][i]))
                     count++;
                 else if (board[origin.getX()][i] != Pawn.EMPTY){
-                    stop = new Coordinate(origin.getX(), i);
+                    stop = new Location(origin.getX(), i);
                     break;
                 }
             }
@@ -163,7 +173,7 @@ public class ReversiGameLogic {
                 if (isNotEmptyAndNotSameColor(board[i][origin.getY()]))
                     count++;
                 else if (board[i][origin.getY()] != Pawn.EMPTY){
-                    stop = new Coordinate(i, origin.getY());
+                    stop = new Location(i, origin.getY());
                     break;
                 }
             }
@@ -172,7 +182,7 @@ public class ReversiGameLogic {
                 if (isNotEmptyAndNotSameColor(board[i][origin.getY()]))
                     count++;
                 else if (board[i][origin.getY()] != Pawn.EMPTY){
-                    stop = new Coordinate(i, origin.getY());
+                    stop = new Location(i, origin.getY());
                     break;
                 }
             }
@@ -183,7 +193,7 @@ public class ReversiGameLogic {
                     if (isNotEmptyAndNotSameColor(board[origin.getX() + i][origin.getY() + i]))
                         count++;
                     else if (board[origin.getX() + i][origin.getY() + i] != Pawn.EMPTY){
-                        stop = new Coordinate(origin.getX() + i, origin.getY() + i);
+                        stop = new Location(origin.getX() + i, origin.getY() + i);
                         break;
                     }
                 }
@@ -193,7 +203,7 @@ public class ReversiGameLogic {
                     if (isNotEmptyAndNotSameColor(board[origin.getX() - i][origin.getY() + i]))
                         count++;
                     else if (board[origin.getX() - i][origin.getY() + i] != Pawn.EMPTY){
-                        stop = new Coordinate(origin.getX() - i, origin.getY() + i);
+                        stop = new Location(origin.getX() - i, origin.getY() + i);
                         break;
                     }
                 }
@@ -203,7 +213,7 @@ public class ReversiGameLogic {
                     if (isNotEmptyAndNotSameColor(board[origin.getX() - i][origin.getY() - i]))
                         count++;
                     else if (board[origin.getX() - i][origin.getY() - i] != Pawn.EMPTY){
-                        stop = new Coordinate(origin.getX() - i, origin.getY() - i);
+                        stop = new Location(origin.getX() - i, origin.getY() - i);
                         break;
                     }
                 }
@@ -213,7 +223,7 @@ public class ReversiGameLogic {
                     if (isNotEmptyAndNotSameColor(board[origin.getX() - i][origin.getY() + i]))
                         count++;
                     else if (board[origin.getX() - i][origin.getY() + i] != Pawn.EMPTY){
-                        stop = new Coordinate(origin.getX() - i, origin.getY() + i);
+                        stop = new Location(origin.getX() - i, origin.getY() + i);
                         break;
                     }
                 }
@@ -226,14 +236,14 @@ public class ReversiGameLogic {
         return false;
     }
 
-    private boolean playOn(Coordinate coordinate){
+    private boolean playOn(Location location){
         if( !limitChangeColor.isEmpty())
             limitChangeColor.clear();
 
         for (int i = 0 ; i < SIZE_BOARD; ++i) {
             for (int j = 0; j < SIZE_BOARD; ++j) {
                 if (board[i][j] != Pawn.EMPTY){
-                    checkLine(coordinate, new Coordinate(i, j));
+                    checkLine(location, new Location(i, j));
                 }
             }
         }
@@ -241,7 +251,7 @@ public class ReversiGameLogic {
         return limitChangeColor.isEmpty();
     }
 
-    private Boolean areAlignDiagonal(Coordinate origin, Coordinate target){
+    private Boolean areAlignDiagonal(Location origin, Location target){
         int x = origin.getX() - target.getX();
         int y = origin.getY() - target.getY();
         if (x < 0)
@@ -251,7 +261,7 @@ public class ReversiGameLogic {
         return(x == y);
     }
 
-    private void changeColorOnLine(Coordinate origin, Coordinate target){
+    private void changeColorOnLine(Location origin, Location target){
         if (origin.getX() == target.getX()){ //vertical
             for (int i = origin.getY(); i <= target.getY(); i++){
                 board[origin.getX()][i] = current_player;

@@ -1,10 +1,10 @@
 package com.griffith.assignment2;
 
-public class Coordinate {
+public class Location {
     private int x;
     private int y;
 
-    public Coordinate(int x, int y) {
+    public Location(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -28,9 +28,9 @@ public class Coordinate {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Coordinate)) return false;
+        if (!(o instanceof Location)) return false;
 
-        Coordinate that = (Coordinate) o;
+        Location that = (Location) o;
 
         if (getX() != that.getX()) return false;
         return getY() == that.getY();
@@ -46,7 +46,7 @@ public class Coordinate {
 
     @Override
     public String toString() {
-        return "Coordinate{" +
+        return "Location{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
