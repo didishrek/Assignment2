@@ -1,9 +1,5 @@
 package com.griffith.assignment2;
 
-/**
- * Created by 42900 on 28/03/2017 for Assignment2.
- */
-
 public class Coordinate {
     private int x;
     private int y;

@@ -1,15 +1,11 @@
 package com.griffith.assignment2;
 
 
-import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by 42900 on 28/03/2017 for Assignment2.
- */
 
 public class ReversiGameLogic {
     public static int SIZE_BOARD = 8;
