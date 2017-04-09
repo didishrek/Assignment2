@@ -29,7 +29,7 @@ public class ReversiGameLogic {
     private Pawn current_player = Pawn.BLACK;
     private Reversi graphic_board;
     private Pawn[][] board = new Pawn[SIZE_BOARD][SIZE_BOARD];
-    private ArrayList<Location> limitChangeColor = new ArrayList<>();;
+    private ArrayList<Location> limitChangeColor = new ArrayList<>();
 
     public ReversiGameLogic(Reversi graphic_board, TextView current_player, TextView points_black, TextView points_white, TextView msg_win) {
         this.tw_current_player = current_player;
@@ -77,7 +77,6 @@ public class ReversiGameLogic {
     }
 
     public void updateTouchEvent(Location location){
-        Boolean finished = false;
         if (board[location.getX()][location.getY()] == Pawn.EMPTY) {
             if (playOn(location))
                 return;
